@@ -113,7 +113,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Driving Licence</span>
                                 </div>
-                                <input type="text" name="DL" class="form-control" placeholder="GJ00 00000000000">
+                                <input type="text" name="licence_number" class="form-control" placeholder="GJ00 00000000000">
                             </div>
 
                             <div class="input-group form-group">
@@ -133,15 +133,23 @@
                         $Emailid = $_SESSION['Emailid'];
                         $fullname = $_POST['fullname'];
                         $DOB = $_POST['DOB'];
-                        $DL = $_POST['DL'];
+                        $licence_number = $_POST['licence_number'];
                         $Aadharcard = $_POST['Aadharcard'];
-                     //   echo "$AN";
-                        $customer = "UPDATE customer SET Name='$fullname',DOB='$DOB',DL='$DL',AN='$Aadharcard' WHERE Email ='$Emailid'";
-                        if ($conn->query($customer) === TRUE) {
-//                            echo 'true';
-                            echo "<script>window.location.href='login_1.php'</script>";
+
+                        if (preg_match("/^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/", $licence_number)) {
+                            if (preg_match("/^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$/", $Aadharcard)) {
+                                $customer = "UPDATE customer SET Name='$fullname',DOB='$DOB',DL='$DL',AN='$Aadharcard' WHERE Email ='$Emailid'";
+                                if ($conn->query($customer) === TRUE) {
+                                    echo "<script>window.location.href='login_1.php'</script>";
+                                } else {
+                                    echo "Error: " . $customer . "<br>" . $conn->error;
+                                }
+                            } else {
+                                echo "<script> alert('plases check Aadhar card Number!');</script>";
+                            }
                         } else {
-                            echo "Error: " . $customer . "<br>" . $conn->error;
+//                            echo "Invalid license number";
+                            echo "<script> alert('plases check license number!');</script>";
                         }
                     }
                     ?>
