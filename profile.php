@@ -120,7 +120,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Aadhar No</span>
                                 </div>
-                                <input type="text" name="AN" class="form-control" placeholder="000000000000">
+                                <input type="text" name="Aadharcard" class="form-control" placeholder="000000000000">
                             </div>
 
                             <div class="form-group" align="center">
@@ -134,9 +134,9 @@
                         $fullname = $_POST['fullname'];
                         $DOB = $_POST['DOB'];
                         $DL = $_POST['DL'];
-                        $AN = $_POST['AN'];
-                        echo "$AN";
-                        $customer = "UPDATE customer SET Name='$fullname',DOB='$DOB',DL='$DL',AN='$AN' WHERE Email ='$Emailid'";
+                        $Aadharcard = $_POST['Aadharcard'];
+                     //   echo "$AN";
+                        $customer = "UPDATE customer SET Name='$fullname',DOB='$DOB',DL='$DL',AN='$Aadharcard' WHERE Email ='$Emailid'";
                         if ($conn->query($customer) === TRUE) {
 //                            echo 'true';
                             echo "<script>window.location.href='login_1.php'</script>";
