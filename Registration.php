@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <!--Fontawesome CDN-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <style>
             html,body{
                 background-image: url('assets/images/Login.jpg');
@@ -85,7 +86,7 @@
         </style>
     </head>
     <body>
-        <?php 
+        <?php
         include './DatabaseConnection.php';
         ?>
         <div class="container">
@@ -105,41 +106,63 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="Emailid" placeholder="Email id">
+                                <input type="text" class="form-control" name="Emailid" placeholder="Enter your Email id" required>
                             </div>
                             <div class="input-group form-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-key"></i></span>
                                 </div>
-                                <input type="password" class="form-control" name="password" placeholder="Password">
+                                <input type="password" class="form-control" name="password" placeholder="Enter your Password" required>
+                                <span id="pass"></span>
                             </div>
 
                             <div class="input-group form-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-key"></i></span>
                                 </div>
-                                <input type="password" class="form-control" name="ConfirmPassword" placeholder="Confirm Password">
+                                <input type="password" class="form-control" id="retypepassword" name="retypepassword" placeholder="Confirm Password" required><br/>
+                                <span id="Rpass"></span>
                             </div>
                             <div class="form-group" align="center">
                                 <input type="submit" value="Registration " name="Registration" class="btn login_btn">
                             </div>
                         </form>
                     </div>
-                    <?php 
-                    if(isset($_POST['Registration'])){
-                          $Emailid = $_POST['Emailid'];
+                    <script>
+                        function pass() {
+                            $(document).ready(function () {
+                                $("#pass").append("Password must be at least 8 characters and contain at least one number and one special symbol.");
+                                $("#pass").css("color", "red");
+                            });
+                        }
+                        function Rpass() {
+                            $(document).ready(function () {
+                                $("#Rpass").append("Passwords do not match.");
+                                $("#Rpass").css("color", "red");
+                            });
+                        }
+                    </script>
+                    <?php
+                    if (isset($_POST['Registration'])) {
+                        $Emailid = $_POST['Emailid'];
                         $password = $_POST['password'];
-                        $_SESSION['Emailid']=$Emailid;
-                          $customer = "INSERT INTO customer VALUES ('', '$Emailid', '$password', '', '', '')";
+                        $retypepassword = $_POST['retypepassword'];
+                        $_SESSION['Emailid'] = $Emailid;
+
+                        // Password validation
+                        if (!preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $password)) {
+                            echo "<script>pass();</script>";
+                        }
+                        if ($password != $retypepassword) {
+                            echo "<script>Rpass();</script>";
+                        }
+                        $customer = "INSERT INTO customer VALUES ('', '$Emailid', '$password', '', '', '')";
                         if ($conn->query($customer) === TRUE) {
-//                            echo 'true';
                             echo "<script>window.location.href='profile.php'</script>";
                         } else {
                             echo "Error: " . $customer . "<br>" . $conn->error;
                         }
                     }
-                    
-                    
                     ?>
                 </div>
             </div>
