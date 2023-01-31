@@ -149,18 +149,25 @@
                         $retypepassword = $_POST['retypepassword'];
                         $_SESSION['Emailid'] = $Emailid;
 
-                        // Password validation
-                        if (!preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $password)) {
+                        $uppercase = preg_match('@[A-Z]@', $password);
+                        $lowercase = preg_match('@[a-z]@', $password);
+                        $number = preg_match('@[0-9]@', $password);
+                        $specialChars = preg_match('@[^\w]@', $password);
+
+                        if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
                             echo "<script>pass();</script>";
-                        }
-                        if ($password != $retypepassword) {
-                            echo "<script>Rpass();</script>";
-                        }
-                        $customer = "INSERT INTO customer VALUES ('', '$Emailid', '$password', '', '', '')";
-                        if ($conn->query($customer) === TRUE) {
-                            echo "<script>window.location.href='profile.php'</script>";
                         } else {
-                            echo "Error: " . $customer . "<br>" . $conn->error;
+                            if ($password != $retypepassword) {
+                                echo "<script>Rpass();</script>";
+                            } else {
+                                
+                                $customer = "INSERT INTO customer VALUES ('', '$Emailid', '$password', '', '', '')";
+                                if ($conn->query($customer) === TRUE) {
+                                    echo "<script>window.location.href='profile.php'</script>";
+                                } else {
+                                    echo "Error: " . $customer . "<br>" . $conn->error;
+                                }
+                            }
                         }
                     }
                     ?>

@@ -55,6 +55,5 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                 </div>
             </nav>
         </header>
-
     </body>
 </html>

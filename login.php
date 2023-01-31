@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <!--Fontawesome CDN-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <style>
             html,body{
                 background-image: url('assets/images/Login.jpg');
@@ -111,6 +112,7 @@
                                     <span class="input-group-text"><i class="fas fa-key"></i></span>
                                 </div>
                                 <input type="password" id="Customerpassword" name="Customerpassword"  class="form-control" placeholder="Password" required>
+                                <span id="pass"></span>
                             </div>
                             <div class="form-group" align="center">
                                 <input type="submit" name="Customersubmit" id="Customersubmit" value="Login" class="btn login_btn">
@@ -126,13 +128,16 @@
             </div>
         </div>
         <script>
-            function myFunction() {
-                alert('please enter valid Email Id and Password!');
+             function pass() {
+                $("#pass").append("please enter valid Email Id and Password!");
+                $("#pass").css("color", "red");
             }
         </script>
         <?php
         if (isset($_POST['Customersubmit'])) {
+//            $CustomerEmail = mysql_real_escape_string($_POST['CustomerEmail']);
             $CustomerEmail = $_POST['CustomerEmail'];
+//            $Customerpassword = mysql_real_escape_string($_POST['Customerpassword']);
             $Customerpassword = $_POST['Customerpassword'];
 
             $sql = "SELECT * FROM customer WHERE Email = '$CustomerEmail' AND Password = '$Customerpassword' ";
@@ -142,7 +147,7 @@
             if (isset($check)) {
                 echo "<script>window.location.href='index.php'</script>";
             } else {
-                echo '<script>myFunction();</script>';
+                echo "<script>pass();</script>";
             }
         }
         ?>
