@@ -154,13 +154,12 @@
                         $number = preg_match('@[0-9]@', $password);
                         $specialChars = preg_match('@[^\w]@', $password);
 
-                        if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
+                        if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 9) {
                             echo "<script>pass();</script>";
                         } else {
                             if ($password != $retypepassword) {
                                 echo "<script>Rpass();</script>";
                             } else {
-                                
                                 $customer = "INSERT INTO customer VALUES ('', '$Emailid', '$password', '', '', '')";
                                 if ($conn->query($customer) === TRUE) {
                                     echo "<script>window.location.href='profile.php'</script>";

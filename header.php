@@ -49,7 +49,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                             <li class="nav-item"><a class="nav-link" href="about-us.php">About Us</a></li>
 
                             <li class="nav-item"><a class="nav-link" href="contact.php">Contact Us</a></li>
-                            <li class="nav-item"><a class="nav-link" href="login_1.php">Login/Registration</a></li>
+                            <li class="nav-item"><a class="nav-link" href="login.php">Login/Registration</a></li>
                         </ul>
                     </div>
                 </div>
