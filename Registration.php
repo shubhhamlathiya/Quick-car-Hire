@@ -106,7 +106,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="Emailid" placeholder="Enter your Email id" required>
+                                <input type="text" class="form-control" name="Emailid" placeholder="Enter your Email id" title="Email should be valid email address." pattern="[A-Za-z0-9._%+-]+@gmail\.com$" required>
                             </div>
                             <div class="input-group form-group">
                                 <div class="input-group-prepend">
@@ -154,13 +154,13 @@
                         $number = preg_match('@[0-9]@', $password);
                         $specialChars = preg_match('@[^\w]@', $password);
 
-                        if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 9) {
+                        if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
                             echo "<script>pass();</script>";
                         } else {
                             if ($password != $retypepassword) {
                                 echo "<script>Rpass();</script>";
                             } else {
-                                $customer = "INSERT INTO customer VALUES ('', '$Emailid', '$password', '', '', '')";
+                                $customer = "INSERT INTO customer VALUES ('', '$Emailid', '$password', '', '', '','')";
                                 if ($conn->query($customer) === TRUE) {
                                     echo "<script>window.location.href='profile.php'</script>";
                                 } else {

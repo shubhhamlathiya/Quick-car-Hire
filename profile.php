@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Registration Page</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <!--Bootsrap 4 CDN-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <!--Fontawesome CDN-->
@@ -100,13 +101,20 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Name</span>
                                 </div>
-                                <input type="text" name="fullname" class="form-control" placeholder="Full Name">
+                                <input type="text" name="fullname" class="form-control" placeholder="Full Name" onkeypress="return (event.charCode > 64 &&
+                                                event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode > 31 && event.charCode < 33)" >
+                            </div>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Mobile Number</span>
+                                </div>
+                                <input type="text" name="MobileNo" class="form-control MobileNo" placeholder="Mobile Number">
                             </div>
                             <div class="input-group form-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Date of Birth</span>
                                 </div>
-                                <input type="date" name="DOB" class="form-control">
+                                <input type="date" name="DOB" id="DOB" class="form-control">
                             </div>
 
                             <div class="input-group form-group">
@@ -128,6 +136,42 @@
                             </div>
                         </form>
                     </div>
+                    <script>
+                        $("#DOB").datepicker({
+                            maxDate: "-18Y",
+                            changeMonth: true,
+                            changeYear: true,
+                            yearRange: "-100:+0",
+                            onClose: function (selectedDate) {
+                                $("#DOB").datepicker("option", "minDate", selectedDate);
+                            }
+                        });
+                        $(document).ready(function () {
+                            $('.MobileNo').on('keypress', function (e) {
+                                var $this = $(this);
+                                var regex = new RegExp("^[0-9\b]+$");
+                                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                                // for 10 digit number only
+                                if ($this.val().length > 9) {
+                                    e.preventDefault();
+                                    return false;
+                                }
+                                if (e.charCode < 54 && e.charCode > 47) {
+                                    if ($this.val().length == 0) {
+                                        e.preventDefault();
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+                                if (regex.test(str)) {
+                                    return true;
+                                }
+                                e.preventDefault();
+                                return false;
+                            });
+                        });
+                    </script>
                     <?php
                     if (isset($_POST['AddCustomer'])) {
                         $Emailid = $_SESSION['Emailid'];
