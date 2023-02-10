@@ -107,13 +107,15 @@
                                 </div>
                                 <input type="email" id="CustomerEmail" name="CustomerEmail" class="form-control" placeholder="Email id" required>
                             </div>
+                            <span id="email1"></span>
                             <div class="input-group form-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-key"></i></span>
                                 </div>
                                 <input type="password" id="Customerpassword" name="Customerpassword"  class="form-control" placeholder="Password" required>
-                                <span id="pass"></span>
+
                             </div>
+                            <span id="pass"></span>
                             <div class="form-group" align="center">
                                 <input type="submit" name="Customersubmit" id="Customersubmit" value="Login" class="btn login_btn">
                             </div>
@@ -129,25 +131,37 @@
         </div>
         <script>
             function pass() {
-                $("#pass").append("please enter valid Email Id and Password!");
+                $("#pass").append("please enter valid Password!");
                 $("#pass").css("color", "red");
+            }
+            function email() {
+                $("#email1").append("please enter valid Email Id!");
+                $("#email1").css("color", "red");
             }
         </script>
         <?php
         if (isset($_POST['Customersubmit'])) {
-//            $CustomerEmail = mysql_real_escape_string($_POST['CustomerEmail']);
             $CustomerEmail = $_POST['CustomerEmail'];
-//            $Customerpassword = mysql_real_escape_string($_POST['Customerpassword']);
             $Customerpassword = $_POST['Customerpassword'];
 
-            $sql = "SELECT * FROM customer WHERE Email = '$CustomerEmail' AND Password = '$Customerpassword' ";
-            $result = mysqli_query($conn, $sql);
-            $check = mysqli_fetch_array($result);
+            $sql = $conn->prepare("SELECT * FROM customer WHERE Email = ? ");
+            $sql->bind_param("s", $CustomerEmail);
+            $sql->execute();
+            $result = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
 
-            if (isset($check)) {
-                echo "<script>window.location.href='index.php'</script>";
+            if (count($result) > 0) {
+                $sql = $conn->prepare("SELECT * FROM customer WHERE Password = ? ");
+                $sql->bind_param("s", $Customerpassword);
+                $sql->execute();
+                $result = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
+
+                if (count($result) > 0) {
+                    echo "<script>window.location.href='index.php'</script>";
+                } else {
+                    echo '<script>pass();</script>';
+                }
             } else {
-                echo "<script>pass();</script>";
+                echo '<script>email();</script>';
             }
         }
         ?>

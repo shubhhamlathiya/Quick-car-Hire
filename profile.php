@@ -115,8 +115,9 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Driving Licence</span>
                                 </div>
-                                <input type="text" name="licence_number" class="form-control licence_number" placeholder="GJ00 00000000000">
+                                <input type="text" name="licence_number" id="licence_number" class="form-control licence_number" placeholder="GJ0000000000000" maxlength="15">
                             </div>
+                            <span id="ErrorR_no" style="color: #f50404;"></span>
 
                             <div class="input-group form-group">
                                 <div class="input-group-prepend">
@@ -182,39 +183,77 @@
                                 return false;
                             });
                         });
+                        // $(document).ready(function () {
+                        //     $('.licence_number').on('keypress', function (e) {
+                        //         var $this = $(this);
+                        //         var regex = new RegExp("^[A-Z]+[0-9\b]+$");
+                        //         var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                        //         // for 10 digit number only
+                        //         if ($this.val().length > 15) {
+                        //             e.preventDefault();
+                        //             return false;
+                        //         }
+                        //         if (e.charCode < 72 && e.charCode > 70) {
+                        //             if ($this.val().length == 1) {
+                        //                 e.preventDefault();
+                        //                 return false;
+                        //             } else {
+                        //                 return true;
+                        //             }
+                        //         }
+                        //         if (e.charCode < 75 && e.charCode > 73) {
+                        //             if ($this.val().length == 0) {
+                        //                 e.preventDefault();
+                        //                 return false;
+                        //             } else {
+                        //                 return true;
+                        //             }
+                        //         }
+                        //         if (regex.test(str)) {
+                        //             return true;
+                        //         }
+                        //         e.preventDefault();
+                        //         return false;
+                        //     });
+                        // });
                         $(document).ready(function () {
-                            $('.licence_number').on('keypress', function (e) {
-                                var $this = $(this);
-                                var regex = new RegExp("^[A-Z]+[0-9\b]+$");
-                                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
-                                // for 10 digit number only
-                                if ($this.val().length > 15) {
-                                    e.preventDefault();
-                                    return false;
-                                }
-                                if (e.charCode < 72 && e.charCode > 70) {
-                                    if ($this.val().length == 1) {
-                                        e.preventDefault();
-                                        return false;
+                        $("#licence_number").keyup(function (e) {
+                            $("#ErrorR_no").html('');
+
+                            var validstr = '';
+                            var dInput = $(this).val();
+                            var numpattern = /^\d+$/;
+                            var alphapattern = /^[A-Z]+$/;
+
+                            for (var i = 0; i < dInput.length; i++) {
+
+                                if ((i == 2 || i == 3 || i == 4 || i == 5 || i == 6 || i == 7 || i == 8 || i == 9 || i == 10 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15)) {
+                                    if (numpattern.test(dInput[i])) {
+                                        // console.log('validnum' + dInput[i]);
+                                        validstr += dInput[i];
                                     } else {
-                                        return true;
+                                        $("#ErrorR_no").html("Only Digits").show();
+
                                     }
                                 }
-                                if (e.charCode < 75 && e.charCode > 73) {
-                                    if ($this.val().length == 0) {
-                                        e.preventDefault();
-                                        return false;
+
+                                if ((i == 0 || i == 1 )) {
+                                    if (alphapattern.test(dInput[i])) {
+                                        // console.log('validword' + dInput[i]);
+                                        validstr += dInput  [i];
                                     } else {
-                                        return true;
+                                        $("#ErrorR_no").html("Only Capital Alpahbets").show();
+
                                     }
                                 }
-                                if (regex.test(str)) {
-                                    return true;
-                                }
-                                e.preventDefault();
-                                return false;
-                            });
+
+                            }
+
+                            $(this).val(validstr);
+                            return false;
                         });
+                        });
+
                     </script>
                     <?php
                     if (isset($_POST['AddCustomer'])) {
