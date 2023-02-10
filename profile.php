@@ -219,16 +219,16 @@
                     <?php
                     if (isset($_POST['AddCustomer'])) {
                         $Emailid = $_SESSION['Emailid'];
-                        $password=$_SESSION['password'] ;
+                        $password = $_SESSION['password'];
                         $fullname = $_POST['fullname'];
                         $mobile = $_POST['MobileNo'];
                         $DOB = $_POST['DOB'];
                         $licence_number = $_POST['licence_number'];
                         $Aadharcard = $_POST['Aadharcard'];
 
-                        $customer=$conn->prepare("INSERT INTO customer VALUES (?,?,?,?,?,?,?)");
+                        $customer = $conn->prepare("INSERT INTO customer VALUES (?,?,?,?,?,?,?)");
 //                        $customer = $conn->prepare("UPDATE customer SET Name=?,MobileNo=?,Date_of_birth=?,Driving_licence=?,AadharCard_no=? WHERE Email =?");
-                        $customer->bind_param("sssssss",$fullname,$Emailid,$password,$mobile,$DOB,$licence_number,$Aadharcard);
+                        $customer->bind_param("sssssss", $fullname, $Emailid, $password, $mobile, $DOB, $licence_number, $Aadharcard);
 //                        $customer->bind_param("ssssss", $fullname, $mobile, $DOB, $licence_number, $Aadharcard, $Emailid);
                         $Addcustomer = $customer->execute();
                         if ($Addcustomer > 0) {

@@ -174,7 +174,7 @@
                             } else {
                                 if ($password != $retypepassword) {
                                     echo "<script>Rpass();</script>";
-                                }else{
+                                } else {
                                     $_SESSION['Emailid'] = $Emailid;
                                     $_SESSION['password'] = $password;
                                     echo "<script>window.location.href='profile.php'</script>";
