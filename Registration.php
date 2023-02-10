@@ -107,6 +107,7 @@
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 </div>
                                 <input type="text" class="form-control" name="Emailid" placeholder="Enter your Email id" title="Email should be valid email address." pattern="[A-Za-z0-9._%+-]+@gmail\.com$" required>
+                                <span id="Email"></span>
                             </div>
                             <div class="input-group form-group">
                                 <div class="input-group-prepend">
@@ -129,6 +130,14 @@
                         </form>
                     </div>
                     <script>
+                        function Email() {
+                            $("#Email").append("Plase enter any valid email address.");
+                            $("#Email").css("color", "red");
+                        }
+                        function alreadyexistEmail() {
+                            $("#Email").append("This Admin Email Id is already exist!");
+                            $("#Email").css("color", "red");
+                        }
                         function pass() {
                             $(document).ready(function () {
                                 $("#pass").append("Password must be at least 8 characters and contain at least one number and one special symbol.");
@@ -147,26 +156,32 @@
                         $Emailid = $_POST['Emailid'];
                         $password = $_POST['password'];
                         $retypepassword = $_POST['retypepassword'];
-                        $_SESSION['Emailid'] = $Emailid;
 
                         $uppercase = preg_match('@[A-Z]@', $password);
                         $lowercase = preg_match('@[a-z]@', $password);
                         $number = preg_match('@[0-9]@', $password);
                         $specialChars = preg_match('@[^\w]@', $password);
 
-                        if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
-                            echo "<script>pass();</script>";
-                        } else {
-                            if ($password != $retypepassword) {
-                                echo "<script>Rpass();</script>";
+                        $CheckP = $conn->prepare("SELECT * FROM customer WHERE Email = ?");
+                        $CheckP->bind_param("s", $Emailid);
+                        $result = $CheckP->execute();
+                        $result = $CheckP->get_result()->fetch_all(MYSQLI_ASSOC);
+
+                        if (!count($result) > 0) {
+
+                            if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
+                                echo "<script>pass();</script>";
                             } else {
-                                $customer = "INSERT INTO customer VALUES ('', '$Emailid', '$password', '', '', '','')";
-                                if ($conn->query($customer) === TRUE) {
+                                if ($password != $retypepassword) {
+                                    echo "<script>Rpass();</script>";
+                                }else{
+                                    $_SESSION['Emailid'] = $Emailid;
+                                    $_SESSION['password'] = $password;
                                     echo "<script>window.location.href='profile.php'</script>";
-                                } else {
-                                    echo "Error: " . $customer . "<br>" . $conn->error;
                                 }
                             }
+                        } else {
+                            echo "<script>alreadyexistEmail();</script>";
                         }
                     }
                     ?>

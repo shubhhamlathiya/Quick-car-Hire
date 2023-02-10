@@ -15,12 +15,10 @@
                 height: 100%;
                 font-family: 'Numans', sans-serif;
             }
-
             .container{
                 height: 100%;
                 align-content: center;
             }
-
             .card{
                 height: auto;
                 margin-top: auto;
@@ -28,19 +26,15 @@
                 width: 500px;
                 background-color: rgba(0,0,0,0.5) !important;
             }
-
-
             .card-header h2{
                 color: #FFC312;
             }
-
             .input-group-prepend span{
                 width: 130px;
                 background-color: #FFC312;
                 color: black;
                 border:0 !important;
             }
-
             input:focus{
                 outline: 0 0 0 0  !important;
                 box-shadow: 0 0 0 0 !important;
@@ -121,14 +115,14 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Driving Licence</span>
                                 </div>
-                                <input type="text" name="licence_number" class="form-control" placeholder="GJ00 00000000000">
+                                <input type="text" name="licence_number" class="form-control licence_number" placeholder="GJ00 00000000000">
                             </div>
 
                             <div class="input-group form-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Aadhar No</span>
                                 </div>
-                                <input type="text" name="Aadharcard" class="form-control" placeholder="000000000000">
+                                <input type="text" name="Aadharcard" class="form-control Aadharcard" placeholder="000000000000">
                             </div>
 
                             <div class="form-group" align="center">
@@ -137,15 +131,6 @@
                         </form>
                     </div>
                     <script>
-                        $("#DOB").datepicker({
-                            maxDate: "-18Y",
-                            changeMonth: true,
-                            changeYear: true,
-                            yearRange: "-100:+0",
-                            onClose: function (selectedDate) {
-                                $("#DOB").datepicker("option", "minDate", selectedDate);
-                            }
-                        });
                         $(document).ready(function () {
                             $('.MobileNo').on('keypress', function (e) {
                                 var $this = $(this);
@@ -171,29 +156,85 @@
                                 return false;
                             });
                         });
+
+                        $(document).ready(function () {
+                            $('.Aadharcard').on('keypress', function (e) {
+                                var $this = $(this);
+                                var regex = new RegExp("^[0-9\b]+$");
+                                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                                // for 10 digit number only
+                                if ($this.val().length > 11) {
+                                    e.preventDefault();
+                                    return false;
+                                }
+                                if (e.charCode < 50 && e.charCode > 47) {
+                                    if ($this.val().length == 0) {
+                                        e.preventDefault();
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+                                if (regex.test(str)) {
+                                    return true;
+                                }
+                                e.preventDefault();
+                                return false;
+                            });
+                        });
+                        $(document).ready(function () {
+                            $('.licence_number').on('keypress', function (e) {
+                                var $this = $(this);
+                                var regex = new RegExp("^[A-Z]+[0-9\b]+$");
+                                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                                // for 10 digit number only
+                                if ($this.val().length > 15) {
+                                    e.preventDefault();
+                                    return false;
+                                }
+                                if (e.charCode < 72 && e.charCode > 70) {
+                                    if ($this.val().length == 1) {
+                                        e.preventDefault();
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+                                if (e.charCode < 75 && e.charCode > 73) {
+                                    if ($this.val().length == 0) {
+                                        e.preventDefault();
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+                                if (regex.test(str)) {
+                                    return true;
+                                }
+                                e.preventDefault();
+                                return false;
+                            });
+                        });
                     </script>
                     <?php
                     if (isset($_POST['AddCustomer'])) {
                         $Emailid = $_SESSION['Emailid'];
+                        $password=$_SESSION['password'] ;
                         $fullname = $_POST['fullname'];
+                        $mobile = $_POST['MobileNo'];
                         $DOB = $_POST['DOB'];
                         $licence_number = $_POST['licence_number'];
                         $Aadharcard = $_POST['Aadharcard'];
 
-                        if (preg_match("/^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/", $licence_number)) {
-                            if (preg_match("/^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$/", $Aadharcard)) {
-                                $customer = "UPDATE customer SET Name='$fullname',DOB='$DOB',DL='$DL',AN='$Aadharcard' WHERE Email ='$Emailid'";
-                                if ($conn->query($customer) === TRUE) {
-                                    echo "<script>window.location.href='login_1.php'</script>";
-                                } else {
-                                    echo "Error: " . $customer . "<br>" . $conn->error;
-                                }
-                            } else {
-                                echo "<script> alert('plases check Aadhar card Number!');</script>";
-                            }
+                        $customer=$conn->prepare("INSERT INTO customer VALUES (?,?,?,?,?,?,?)");
+//                        $customer = $conn->prepare("UPDATE customer SET Name=?,MobileNo=?,Date_of_birth=?,Driving_licence=?,AadharCard_no=? WHERE Email =?");
+                        $customer->bind_param("sssssss",$fullname,$Emailid,$password,$mobile,$DOB,$licence_number,$Aadharcard);
+//                        $customer->bind_param("ssssss", $fullname, $mobile, $DOB, $licence_number, $Aadharcard, $Emailid);
+                        $Addcustomer = $customer->execute();
+                        if ($Addcustomer > 0) {
+                            echo "<script>window.location.href='index.php'</script>";
                         } else {
-//                            echo "Invalid license number";
-                            echo "<script> alert('plases check license number!');</script>";
+                            echo "Error: " . $customer . "<br>" . $conn->error;
                         }
                     }
                     ?>
