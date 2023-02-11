@@ -4,9 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/QuickCarHire/header.php</file>
+            <file>file:/C:/xampp/htdocs/QuickCarHire/login.php</file>
             <file>file:/C:/xampp/htdocs/QuickCarHire/index.php</file>
+            <file>file:/C:/xampp/htdocs/QuickCarHire/DatabaseConnection.php</file>
+            <file>file:/C:/xampp/htdocs/QuickCarHire/about-us.php</file>
             <file>file:/C:/xampp/htdocs/QuickCarHire/Registration.php</file>
+            <file>file:/C:/xampp/htdocs/QuickCarHire/password.php</file>
             <file>file:/C:/xampp/htdocs/QuickCarHire/profile.php</file>
+            <file>file:/C:/xampp/htdocs/QuickCarHire/contact.php</file>
+            <file>file:/C:/xampp/htdocs/QuickCarHire/offers.php</file>
         </group>
     </open-files>
 </project-private>
