@@ -150,8 +150,8 @@
             $result = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
 
             if (count($result) > 0) {
-                $sql = $conn->prepare("SELECT * FROM customer WHERE Password = ? ");
-                $sql->bind_param("s", $Customerpassword);
+                $sql = $conn->prepare("SELECT * FROM customer WHERE Email = ? && Password = ? ");
+                $sql->bind_param("ss", $CustomerEmail,$Customerpassword);
                 $sql->execute();
                 $result = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
 
